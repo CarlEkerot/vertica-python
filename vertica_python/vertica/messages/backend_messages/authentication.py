@@ -18,9 +18,7 @@ class Authentication(BackendMessage):
     SSPI = 9
 
     def __init__(self, data):
-        unpacked = unpack('!I{0}s'.format(len(data) - 4), data)
-        self.code = unpacked[0]
-        other = unpacked[1::][0]
+        self.code, other = unpack('!I{0}s'.format(len(data) - 4), data)
         if self.code in [self.CRYPT_PASSWORD, self.MD5_PASSWORD]:
             self.salt = other
         if self.code in [self.GSS_CONTINUE]:
